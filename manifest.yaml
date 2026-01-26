@@ -1,0 +1,8 @@
+name: editableDefault
+description: Standard UniChat widget but with editable fields.
+version: 1.1.0
+author: Voguh
+license: MIT
+homepage: https://github.com/unichat-community/unichat-widget-editableDefault
+dependencies:
+  - unichat@[1.4.0,)
