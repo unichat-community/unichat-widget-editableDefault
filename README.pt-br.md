@@ -2,7 +2,7 @@
 
 <p align="center">
   <a href="./README.md">🇺🇸 English</a> |
-  <a href="./README.pt-BR.md">🇧🇷 Português</a> 
+  <a href="./README.pt-br.md">🇧🇷 Português</a> 
 </p>
 
 Este widget é o mesmo widget `default` do [**UniChat**](https://github.com/voguh/unichat), mas com a capacidade de editar seu código-fonte e com campos editáveis no editor do **UniChat**.
