@@ -45,37 +45,36 @@ jobs:
 
       - name: Prepare Folder to ZIP
         run: |
-          MANIFEST_WIDGET_NAME="$(yq e '.name' manifest.yaml)"
-          mkdir -p "dist/${MANIFEST_WIDGET_NAME}"
-          cp -r assets "dist/${MANIFEST_WIDGET_NAME}/" || echo "No assets directory to copy."
-          cp fields.json "dist/${MANIFEST_WIDGET_NAME}/" || echo "No fields.json file to copy."
-          cp LICENSE "dist/${MANIFEST_WIDGET_NAME}/" || echo "No LICENSE file to copy."
-          cp main.html "dist/${MANIFEST_WIDGET_NAME}/"
-          cp manifest.yaml "dist/${MANIFEST_WIDGET_NAME}/"
-          cp script.js "dist/${MANIFEST_WIDGET_NAME}/"
-          cp style.css "dist/${MANIFEST_WIDGET_NAME}/"
+          WIDGET_NAME="$(yq e '.name' manifest.yaml)"
+          mkdir -p "dist/${WIDGET_NAME}"
+          cp -r assets "dist/${WIDGET_NAME}/" || echo "No assets directory to copy."
+          cp fields.json "dist/${WIDGET_NAME}/" || echo "No fields.json file to copy."
+          cp LICENSE "dist/${WIDGET_NAME}/" || echo "No LICENSE file to copy."
+          cp main.html "dist/${WIDGET_NAME}/"
+          cp manifest.yaml "dist/${WIDGET_NAME}/"
+          cp script.js "dist/${WIDGET_NAME}/"
+          cp style.css "dist/${WIDGET_NAME}/"
 
       - name: Create ZIP Archive
         id: prepare_release
         run: |
-          MANIFEST_WIDGET_NAME="$(yq e '.name' manifest.yaml)"
-          TAG_NAME="${GITHUB_REF#refs/tags/}"
-          ZIP_FILE="${MANIFEST_WIDGET_NAME}-${TAG_NAME}.zip"
+          WIDGET_NAME="$(yq e '.name' manifest.yaml)"
+          WIDGET_VERSION="$(yq e '.version' manifest.yaml)"
+          ZIP_FILE="${WIDGET_NAME}-${WIDGET_VERSION}.zip"
           echo "Creating ZIP archive: $ZIP_FILE"
-          cd dist && zip -r "$ZIP_FILE" "${MANIFEST_WIDGET_NAME}" -x "**/fieldstate.json"
+          cd dist && zip -r "$ZIP_FILE" "${WIDGET_NAME}" -x "**/fieldstate.json"
 
       - name: Create GitHub Release
-        if: startsWith(github.ref, 'refs/tags/')
         run: |
-          MANIFEST_WIDGET_NAME="$(yq e '.name' manifest.yaml)"
-          TAG_NAME="${GITHUB_REF#refs/tags/}"
-          ZIP_FILE="${MANIFEST_WIDGET_NAME}-${TAG_NAME}.zip"
+          WIDGET_NAME="$(yq e '.name' manifest.yaml)"
+          WIDGET_VERSION="$(yq e '.version' manifest.yaml)"
+          ZIP_FILE="${WIDGET_NAME}-${WIDGET_VERSION}.zip"
           if [ -n "$(command -v gh)" ]; then
-            echo "Creating GitHub Release for tag $TAG_NAME"
+            echo "Creating GitHub Release for tag $WIDGET_VERSION"
             echo "${{ secrets.GITHUB_TOKEN }}" | gh auth login --with-token
-            gh release create "$TAG_NAME" --prerelease
+            gh release create "$WIDGET_VERSION" --prerelease
             echo "Uploading $ZIP_FILE to GitHub Release"
-            gh release upload "$TAG_NAME" "dist/$ZIP_FILE" --clobber
+            gh release upload "$WIDGET_VERSION" "dist/$ZIP_FILE" --clobber
             echo "All files uploaded to GitHub Release successfully."
           else
             echo "GitHub CLI is not installed. Skipping upload to GitHub Release."
