@@ -57,6 +57,18 @@ html, body {
     -webkit-mask-image: linear-gradient(to bottom, transparent, black var(--top-fade-effect-size));
 }
 
+#main-container.obs-dock {
+    top: unset;
+    height: 100%;
+    max-height: calc(100vh - (var(--general-padding) * 2));
+    overflow-y: scroll;
+    display: inline;
+    flex-direction: initial;
+    justify-content: initial;
+    mask-image: none;
+    -webkit-mask-image: none;
+}
+
 #main-container > div {
     --margin-top: calc(((var(--author-badge-size) + var(--general-padding)) / 2) + 8px);
 

@@ -1,3 +1,7 @@
+const searchQuery = new URLSearchParams(window.location.search);
+const IS_IN_OBS_DOCK = searchQuery.get("obs_dock") === "true";
+const MAXIMUM_MESSAGES = parseInt(searchQuery.get("max_messages") ?? "50", 10);
+
 /* <<==== FIELDS TO JS VARIABLES ====>> */
 const SHOW_PLATFORM_BADGE = "{{platformBadge}}" === "true";
 const EXIT_DELAY = parseInt("{{exitDelay}}", 10);
@@ -86,7 +90,7 @@ function enrichMessage(text, data) {
 }
 
 function removeChildren() {
-    if(MAIN_CONTAINER.children.length > 50) {
+    if(MAIN_CONTAINER.children.length > MAXIMUM_MESSAGES) {
         MAIN_CONTAINER.firstChild.remove();
         requestAnimationFrame(removeChildren);
     }
@@ -100,9 +104,15 @@ window.addEventListener("unichat:connected", function () {
     if (EXIT_DELAY > 0 && !MAIN_CONTAINER.classList.contains("with-exit-animation")) {
         MAIN_CONTAINER.classList.add("with-exit-animation");
     }
+
+    if (IS_IN_OBS_DOCK) {
+        MAIN_CONTAINER.classList.add("obs-dock");
+    }
 });
 
 window.addEventListener("unichat:event", function ({ detail: event }) {
+    const isAtBottom = MAIN_CONTAINER.scrollHeight - MAIN_CONTAINER.scrollTop <= MAIN_CONTAINER.clientHeight + 20;
+
     if (SHOW_PLATFORM_BADGE && event != null && event.data != null && Array.isArray(event.data.authorBadges)) {
         let imgUrl;
         if (event.data.platform === "youtube") {
@@ -172,6 +182,10 @@ window.addEventListener("unichat:event", function ({ detail: event }) {
         if (htmlTemplate != null && MAIN_CONTAINER.querySelector(`div[data-id="${event.data.messageId}"]`) == null) {
             $(MAIN_CONTAINER).append(htmlTemplate);
         }
+    }
+
+    if(isAtBottom) {
+        MAIN_CONTAINER.scrollTop = MAIN_CONTAINER.scrollHeight;
     }
 
     requestAnimationFrame(removeChildren);
