@@ -63,6 +63,7 @@ jobs:
           ZIP_FILE="${WIDGET_NAME}-${WIDGET_VERSION}.zip"
           echo "Creating ZIP archive: $ZIP_FILE"
           cd dist && zip -r "$ZIP_FILE" "${WIDGET_NAME}" -x "**/fieldstate.json"
+          rm -rf "dist/${WIDGET_NAME}"
 
       - name: Create and upload to Forgejo Release
         uses: actions/forgejo-release@v2.11.3
