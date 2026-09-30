@@ -11,6 +11,7 @@ const SPONSOR_GIFT_TEMPLATE_MESSAGE = "{{sponsorGiftTemplateMessage}}";
 const RAID_TEMPLATE_MESSAGE = "{{raidTemplateMessage}}";
 const RAID_VIEWERS_DEFAULT_TEXT = "{{raidViewersDefaultText}}";
 const REDEMPTION_TEMPLATE_MESSAGE = "{{redemptionTemplateMessage}}";
+const GIFT_TEMPLATE_MESSAGE = "{{giftTemplateMessage}}";
 /* <<== END FIELDS TO JS VARIABLES ==>> */
 
 const MAIN_CONTAINER = document.querySelector("#main-container");
@@ -20,6 +21,7 @@ const SPONSOR_TEMPLATE = document.querySelector("#sponsor_item").innerHTML;
 const SPONSOR_GIFT_TEMPLATE = document.querySelector("#sponsor-gift_item").innerHTML;
 const RAID_TEMPLATE = document.querySelector("#raid_item").innerHTML;
 const REDEMPTION_TEMPLATE = document.querySelector("#redemption_item").innerHTML;
+const GIFT_TEMPLATE = document.querySelector("#gift_item").innerHTML;
 
 function buildBadges(badges) {
     let badgeJoin = ''
@@ -177,6 +179,12 @@ window.addEventListener("unichat:event", function ({ detail: event }) {
 
             htmlTemplate = enrichMessage(REDEMPTION_TEMPLATE, data);
             htmlTemplate = htmlTemplate.replace("{redemption_meta}", enrichMessage(REDEMPTION_TEMPLATE_MESSAGE, data));
+        } else if (event.type === "unichat:gift") {
+            /** @type {import("../unichat").UniChatEventGift['data']} */
+            const data = event.data;
+
+            htmlTemplate = enrichMessage(GIFT_TEMPLATE, data);
+            htmlTemplate = htmlTemplate.replace("{gift_meta}", enrichMessage(GIFT_TEMPLATE_MESSAGE, data));
         }
 
         if (htmlTemplate != null && MAIN_CONTAINER.querySelector(`div[data-id="${event.data.messageId}"]`) == null) {

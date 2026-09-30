@@ -34,6 +34,10 @@
 
     --redemption-background-color: {{redemptionBackgroundColor}};
     --redemption-text-color: {{redemptionTextColor}};
+
+    --gift-background-color: {{giftBackgroundColor}};
+    --gift-text-color: {{giftTextColor}};
+    --gift-image-size: {{giftImageSize}}px;
     /* <<== END FIELDS TO CSS VARIABLES ==>> */
 }
 
@@ -369,3 +373,31 @@ html, body {
     vertical-align: middle;
 }
 /* <========================================[ END REDEMPTION MESSAGE STYLE ]========================================> */
+
+/* <=============================================[ GIFT MESSAGE STYLE ]=============================================> */
+#main-container > .gift-item {
+    margin-top: var(--margin-top);
+    position: relative;
+}
+
+#main-container > .gift-item > .author-meta {
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#main-container > .gift-item > .message {
+    padding: var(--margin-top) var(--general-padding) var(--general-padding) var(--general-padding);
+    border-radius: var(--general-border-radius);
+    background: var(--gift-background-color);
+    color: var(--gift-text-color);
+    box-shadow: var(--general-box-shadow);
+    width: fit-content;
+    margin: 0 auto;
+}
+
+#main-container > .gift-item > .message > img {
+    height: var(--gift-image-size);
+    width: var(--gift-image-size);
+    object-fit: contain;
+}
+/* <===========================================[ END GIFT MESSAGE STYLE ]===========================================> */
