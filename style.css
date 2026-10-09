@@ -151,6 +151,10 @@ html, body {
     height: var(--emote-size);
     vertical-align: middle;
 }
+
+#main-container > .message-item[data-twitch-gif="true"] > .message > img {
+    height: calc(var(--emote-size) * 8);
+}
 /* <==========================================[ END SIMPLE MESSAGE STYLE ]==========================================> */
 
 /* <============================================[ DONATE MESSAGE STYLE ]============================================> */
